@@ -36,6 +36,8 @@ class CreateSolicitacoesTable extends Migration
             $table->date('data')->nullable(false);
             $table->string('observ', 255)->nullable(false);
             $table->string('statussolicitacao', 50)->default(' ');
+
+            $table->string('justificativa', 255)->nullable(false);
             
           $table->timestamps();
         });

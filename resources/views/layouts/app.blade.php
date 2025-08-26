@@ -30,21 +30,21 @@
   <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
       <div class="container">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <h1 class="ls-brand-name">
-            <div class="container-fluid">
-              <div class="form-group col-md-4">
-                <img src="{{asset('images/logo.png')}}" class="logo1" style="width: 150px;" />
-              </div>
-              <div class="form-group col-md-3">
-                <img src="{{asset('images/LogoHSJ.png')}}" class="logo2"  style="width: 90px;" />
-              </div>
-              <div class="form-group col-md-3">
-                <img src="{{asset('images/LgWC2.png')}}" style="width: 90px;" />
-              </div>
+        <div class="ls-brand-name">
+                    <div class="container-fluid">
+                        <ul>
+                            <img src="{{ asset('images/logo.png') }}" class="logo3" style="width: 195px; margin-top: 5px;" />
+                        </ul>
+                        <ul>
+                            <img src="{{ asset('images/LogoHSJ1.png') }}" class="logo2"
+                                style="width: 165px; margin-top: 5px;" />
+                        </ul>
+                        <ul>
+                            <img src="{{ asset('images/LgWC2.png') }}" class="logo1" style="width: 90px;" />
+                        </ul>
 
-            </div>
-        </div>
+                    </div>
+                </div>
         </h1>
         <!-- Left Side Of Navbar -->
         <ul class="navbar-nav mr-auto">

@@ -14,7 +14,7 @@ class Sector extends Model
     }
 
 
-    // Um setor tem muitos usuário
+    // Um setor tem muitos usuários
     public function user()
     {
         return $this->hasMany(User::class);

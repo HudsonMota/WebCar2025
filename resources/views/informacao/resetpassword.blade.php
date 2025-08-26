@@ -2,7 +2,7 @@
 
 @section('content')
     <fieldset>
-        <h1 class="ls-title-intro ls-ico-question">Tutorial sobre o Sistema</h1>
+        <h1 class="ls-title-intro ls-ico-question">Tutorial do Sistema</h1>
 
         <br>
         <h3 class="ls-title-3">WEBCAR 2ª VERSÃO</h3>
@@ -41,10 +41,4 @@
         <!-- /RESETAR SENHA -->
 
     </fieldset>
-
-    <br><br><br><br><br><br>
-
-    <footer class="footer">© 2020 - Todos os direitos reservados</footer>
-
-    <br>
 @stop

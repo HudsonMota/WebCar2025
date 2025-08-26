@@ -3,7 +3,10 @@
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Console\Tester\TesterTrait;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\EmailController;
 
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,17 +19,36 @@ use Symfony\Component\Console\Tester\TesterTrait;
 */
 
 Auth::routes();
+
+Route::get('/send-test-email', function () {
+    Mail::raw('Este é um e-mail de teste do MailerSend.', function ($message) {
+        $message->to('hudson.mg2017@gmail.com') // Substitua pelo e-mail real
+            ->subject('E-mail de Teste do MailerSend');
+    });
+
+    return 'E-mail enviado!';
+});
+
+// Rota para envio de email - Método GET
+Route::get('/send-email', 'EmailController@showForm')->name('send.email.form');
+// Rota para envio de email - Método POST
+Route::post('/send-email', 'EmailController@sendEmail')->name('send.email');
+
+
 Route::get('/request-vehicle-pdf/{id}', 'PdfController@gerarPdf');
 Route::get('/authorization-pdf/{id}', 'PdfController@gerarPdf1');
 Route::get('/informacao/add', 'InformacaoController@get_add_informacao')->name('informacao.add'); // Rota da view
 
+// TUTORIAL
 Route::get('/informacao/tutorial', 'InformacaoController@get_tutorial_informacao')->name('informacao.tutorial');
-
+// TUTORIAIS
 Route::get('/informacao/cad', 'InformacaoController@get_tutorial_cad')->name('informacao.cad');
 Route::get('/informacao/access', 'InformacaoController@get_tutorial_access')->name('informacao.access');
 Route::get('/informacao/resetpassword', 'InformacaoController@get_tutorial_resetpassword')->name('informacao.resetpassword');
 Route::get('/informacao/vehiclerequest', 'InformacaoController@get_tutorial_vehiclerequest')->name('informacao.vehiclerequest');
 Route::get('/informacao/verifyrequest', 'InformacaoController@get_tutorial_verifyrequest')->name('informacao.verifyrequest');
+
+Route::get('/informacao/newsolicity', 'InformacaoController@get_tutorial_newsolicity')->name('informacao.newsolicity');
 
 // ROTAS PARA DESLOGAR E ENVIAR PARA VIEW DE LOGIN
 Route::get('/logout', 'Auth\LoginController@logout');
@@ -50,6 +72,9 @@ Route::group(['middleware' => ['auth', 'userRequest']], function () {
     });
     Route::post('/solicitacao', 'SolicitacaoController@post_list_solicitacao')->name('solicitacao.list');
     Route::get('/solicitacoes', 'SolicitacaoController@list_solicitacoes')->name('solicitacoes');
+    // ROTA PARA DATATABLES >>
+    Route::get('/solicitacao/data', 'SolicitacaoController@getSolicitacoes')->name('solicitacao.data');
+    // ROTA PARA DATATABLES <<
     Route::get('/solicitacao-pendentes', 'SolicitacaoController@your_pending_requests')->name('solicitacoes.pendentes');
     Route::get('/solicitacao-realizadas', 'SolicitacaoController@your_trips_made')->name('solicitacoes.realizadas');
 

@@ -22,7 +22,8 @@ class RoleUserController extends Controller
     {
         $users = \App\User::all(['id', 'name']);
         $roles = \App\Role::all(['id', 'name', 'label']);
-        return view('role_user/add_role_user', compact('users', 'roles'));
+        $read = \App\User::orderBy('id', 'desc')->get();
+        return view('role_user/add_role_user', compact('read', 'users', 'roles'));
     }
 
     public function post_add_role_user(Request $request)
@@ -52,7 +53,7 @@ class RoleUserController extends Controller
     public function get_edit_role_use($id)
     {
         $users = \App\User::all(['id', 'name']);
-        $roles = \App\Role::all(['id', 'name', 'label']);        
+        $roles = \App\Role::all(['id', 'name', 'label']);
         $role_user = $this->role_user->find($id);
         return view('role_user/edit_role_user', compact('role_user', 'users', 'roles'));
     }

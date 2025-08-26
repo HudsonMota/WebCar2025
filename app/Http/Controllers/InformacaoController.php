@@ -47,4 +47,9 @@ class InformacaoController extends Controller
   {
     return view('informacao/verifyrequest');
   }
+
+  public function get_tutorial_newsolicity(Request $field)
+  {
+    return view('informacao/newsolicity');
+  }
 }

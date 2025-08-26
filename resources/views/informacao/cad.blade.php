@@ -3,7 +3,7 @@
 @section('content')
     <fieldset>
 
-        <h1 class="ls-title-intro ls-ico-question">Tutorial sobre o Sistema</h1>
+        <h1 class="ls-title-intro ls-ico-question">Tutorial do Sistema</h1>
 
         <br>
 
@@ -52,9 +52,4 @@
 
     </fieldset>
 
-    <br><br><br>
-
-    <footer class="footer">© 2020 - Todos os direitos reservados</footer>
-
-    <br>
 @stop

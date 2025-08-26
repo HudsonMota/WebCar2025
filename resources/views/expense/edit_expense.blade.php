@@ -83,7 +83,7 @@
       var kminicial = document.getElementById("kminicial");
       var kmfinal = document.getElementById("kmfinal");
       var result = kmfinal.value - kminicial.value;
-      if (kmfinal.value <= kminicial.value) {
+      if (result <= 0) {
         kmfinal.setCustomValidity("A quilometragem final precisa ser maior que a inicial");
       } else {
         kmfinal.setCustomValidity("");

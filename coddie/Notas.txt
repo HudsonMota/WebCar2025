@@ -1,0 +1,87 @@
+*Painel ADM
+    - Cadastrar Motorista
+    - Cadastrar Setores
+    - Cadastrar Custo
+        Cadastrar categoria de Custo
+        Cadastrar Custo
+    - Cadastrar Funcionalidade de Usuário
+        01 - SUPER ADM
+            Atores: Infra
+            Permissões:
+                Cadastrar Funcionalidade de Usuário(Essencial) 
+                Todas as demais permissões
+        02 - ADM
+            Atores: Serviçoes Gerais
+            Permissões: 
+                - Solicitar Veículos
+                - Editar e excuir solcicitações pendentes
+                - Autorizar solicitações
+                - Cadastrar Custo
+                    Cadastrar categoria de Custo
+                    Cadastrar Custo
+                - Cadastrar Motorista
+                - Cadastrar Setores
+        03 - MANAGER
+            Atores: Fabina, Nadirlan
+            Permissões: 
+            - Acessar relatórios
+            - visualização de dasboards
+            - Imprimir e exportar relatórios
+        04 - USER REQUEST
+            Atores: Gerencia de Setores 
+            Permissões: Solicitar Veículos, editar e excluir solcicitações pendentes
+
+
+
+Pendencias////////////
+
+(GERAL) - Ajustar 'yy' para 'Y'
+
+*Login
+    (GERAL) - Ajustar função recuperar senha
+* Página Inicial
+    - Ajustar dasboards
+        (ADM) - Veículos Cadastrados
+        (ADM) - Veículos em Manutenção
+        (ADM/USER) - Solcicitações Pendentes
+        (ADM/USER) - Viagens Realizadas
+        
+* Veículo
+    (ADM) - Cadastrar Veículo
+    (ADM) - Buscar Veículo
+* Solcicitação de Veículos
+    (ADM/USER) - Solicitar Veículo
+    (ADM/USER) - Buscar Solcicitação
+        - Impressões
+            (ADM/USER) - Imprelentar Lógica ACL em Impressões(Bloquear visualização sem autorização)
+            (ADM/USER) - Exibir Quilometros Rodados em Solcicitação(Após viagem) 
+* Autorizar Solcicitações de Veículos
+    *Impressões
+        (ADM) - Exibir Quilometros Rodados em Solcicitação(Após viagem) 
+* Informações 
+    - Gráficos
+        (ADM) - Acressentar Gráficos Relacionados a Custos
+            - Manutenção (Motorista/Setor)
+            - Abastecimento (Motorista/Setor)
+            - Acessórios (Veículo)
+            - Multas (Veículo/Motorista)
+        (ADM) - Quilometragem
+            - Quilometragem  (Motorista - Setor)
+            - Relatórios
+    - Sobre
+        (ADM/USER) - Documentação
+
+
+fatimamaia
+hsjimpressa
+
+85997835391
+
+{{date('Y-m-d') - date('Y-m-d', mktime(0, 0, 0, date('m') , 1 , date('Y')))}} - {{date('Y-m-d')}} = 
+
+
+
+
+
+Nome do sistema 
+WEBCAR HSJ

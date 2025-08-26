@@ -9,12 +9,15 @@ use App\Authorizacao;
 use App\Sector;
 use App\Solicitacao;
 use App\User;
+use App\Adress;
 use App\Vehicle;
 use Dotenv\Result\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Rfc4122\UuidV1;
+use SebastianBergmann\Environment\Console;
 
 class AuthorizationController extends Controller
 {
@@ -22,19 +25,27 @@ class AuthorizationController extends Controller
     public function index(Request $field)
     {
         $users = User::get();
+        $adress = Adress::get();
 
-        $vehiclerequests = Solicitacao::where('statussolicitacao', 'PENDENTE')->orderby('id', 'desc')->paginate(20);
-        return view('authorization/authorization-add', compact('vehiclerequests'), compact('users'));
+        $vehiclerequests = Solicitacao::where('statussolicitacao', 'PENDENTE')->orderby('datasaida', 'desc')->paginate(10);
+        return view('authorization/authorization-add', compact('vehiclerequests'), compact('users'), compact('adress'));
     }
 
-    // Função para gravar novo roteiro
+    // Função para gravar novo roteiro      // AUTHORIZATION LIST
     public function store(Request $field)
     {
+
+        // $teste = UuidV1::uuid4();
+        // dd($teste);
+
         $authorizerequest = new Authorizacao();
         $authorizerequest->driver = $field['driver'];
         $authorizerequest->vehicle = $field['vehicle'];
         $authorizerequest->authorized_departure_date  = $field['datasaidaautorizada'];
         $authorizerequest->authorized_departure_time = $field['horasaidaautorizada'];
+
+        //JUSTIFICATIVA
+        $authorizerequest->justificativa = $field['justificativa'];
 
         if (is_null($field['kmfinal'])) {
         } else {
@@ -43,21 +54,32 @@ class AuthorizationController extends Controller
             $authorizerequest->output_mileage  = $field['kminicial'];
             $authorizerequest->return_mileage = $field['kmfinal'];
         }
+        // if ($field['kmfinal']) {
+        //     $authorizerequest->return_date  = $field['dataretorno'];
+        //     $authorizerequest->return_time = $field['horaretorno'];
+        //     $authorizerequest->output_mileage  = $field['kminicial'];
+        //     $authorizerequest->return_mileage = $field['kmfinal'];
+        // }
+
+
 
         // Salva o usuário logado que está autorizando o roteiro
         $authorizerequest->authorizer = Auth::user()->name;
 
-        $authorizerequest->statusauthorization = 'AUTORIZADO';
+        $authorizerequest->statusauthorization = 'AUTORIZADO';      //TYPE ENUM
 
         // Pega a string contendo os Id's das solicitações selecionadas e converte em um array
-        $selectrequestsarray = $field['selectrequestsarray'];
-        $selectrequestexplode = explode(",", $selectrequestsarray);
+        $selectrequestsarray = $field['selectrequestsarray']; //"101, 102, 103"
+        $selectrequestexplode = explode(",", $selectrequestsarray); //"[101, 102, 103]"
 
         // Identificador de roteiro
         $date = date("d-m-Y");
         $time = date("H:i:s");
         $cod = md5(uniqid(rand(), true));
         $cod_group = $date . "_" . $time . "_" . $cod;
+
+
+        // $cod_group = UuidV1::uuid4();        gera o identificador do roteiro
 
         // A partir do array $selectrequestexplode, cada solicitação receberá um novo update
         for ($i = 0; $i < count($selectrequestexplode); $i++) {
@@ -87,75 +109,19 @@ class AuthorizationController extends Controller
     // Função para visualizar dados da VIEW /authorizations
     public function list_authorizations()
     {
-
-        $users = DB::table('users')->select(
-            DB::raw('id as id'),
-            DB::raw('sector_id as sector_id'),
-            DB::raw('name as name')
-        )->get();
-
-        // Retorna as solicitações em ordem decrescente
-        $requests = DB::table('vehiclerequests')->orderBy('id', 'desc')
-            ->select(
-                DB::raw('id as id'),
-                DB::raw('grouprequest as grouprequest'),
-                DB::raw('solicitante as solicitante'),
-                DB::raw('setorsolicitante as setorsolicitante'),
-                DB::raw('origem as origem'),
-                DB::raw('destino as destino'),
-                DB::raw('datasaida as datasaida'),
-                DB::raw('horasaida as horasaida'),
-                DB::raw('statussolicitacao as statussolicitacao'),
-            )->get();
-
-        // Retorna os setores
-        $sectors = DB::table('sectors')
-            ->select(
-                DB::raw('id as id'),
-                DB::raw('cc as cc'),
-                DB::raw('sector as sector'),
-            )->get();
+        // // Retorna os setores
+        $sectors = DB::table('sectors')->get();
 
         // Retorna os roteiros em ordem decrescente
-        $scriptauthorized = DB::table('authorizerequests')->orderBy('id', 'desc')
-            ->select(
-                DB::raw('id as id'),
-                DB::raw('itinerary as itinerary'),
-                DB::raw('arr_requests_in_script as arr_requests_in_script'),
-                DB::raw('driver as driver'),
-                DB::raw('vehicle as vehicle'),
-                DB::raw('authorized_departure_date as authorized_departure_date'),
-                DB::raw('authorized_departure_time as authorized_departure_time'),
-                DB::raw('authorizer as authorizer'),
-                DB::raw('statusauthorization as statusauthorization'),
-                DB::raw('return_date as return_date'),
-                DB::raw('return_time as return_time'),
-            )->get();
+        $scriptsauthorizeds = DB::table('authorizerequests')->orderBy('id', 'desc')->paginate(10);
 
-        // Retorna os veículos
-        $vehicles = DB::table('vehicles')
-            ->select(
-                DB::raw('id as id'),
-                DB::raw('brand as brand'),
-                DB::raw('model as model'),
-                DB::raw('placa as placa'),
-            )->get();
+        // // Retorna os veículos
+        $vehicles = DB::table('vehicles')->get();
 
-        // Retorna os motoristas
-        $drivers = DB::table('drivers')
-            ->select(
-                DB::raw('id as id'),
-                DB::raw('name_driver as name_driver'),
-            )->get();
+        // // Retorna os motoristas
+        $drivers = DB::table('drivers')->get();
 
-
-        return view('authorization/authorization-list')
-            ->with('requests', json_encode($requests))
-            ->with('sectors', json_encode($sectors))
-            ->with('scriptauthorized', json_encode($scriptauthorized))
-            ->with('vehicles', json_encode($vehicles))
-            ->with('drivers', json_encode($drivers))
-            ->with('users', json_encode($users));
+        return view('authorization/authorization-list', compact('scriptsauthorizeds', 'sectors', 'vehicles', 'drivers'));
     }
 
     // Função para exbir view de edição de formulário
@@ -163,7 +129,7 @@ class AuthorizationController extends Controller
     {
         $users = User::get();
         $scriptauthorized = Authorizacao::find($id);
-        $vehiclerequests = Solicitacao::where('statussolicitacao', '=', 'PENDENTE')->orderby('created_at', 'desc')->paginate(20);
+        $vehiclerequests = Solicitacao::where('statussolicitacao', '=', 'PENDENTE')->orderby('created_at', 'desc')->paginate(10);
 
         $itinerary = $scriptauthorized->itinerary;
         $grouprequestsauth = Solicitacao::where('grouprequest', '=', $itinerary)->orderby('created_at', 'desc')->get();
@@ -250,6 +216,9 @@ class AuthorizationController extends Controller
         $authorizerequest->authorizer = Auth::user()->name;
         $authorizerequest->statusauthorization = "REALIZADO";
 
+        //JUSTIFICATIVA
+        $authorizerequest->justificativa = $info['justificativa'];
+
         // Caso mutiplas roteiros variável pegará a string que registra os ids das solicitações
         // $authorizerequest->arr_requests_in_script e fará um explode() para transformará em array
         $arr_requests_in_script = explode(',', $authorizerequest->arr_requests_in_script);
@@ -290,6 +259,8 @@ class AuthorizationController extends Controller
             ->where('category_id', '=', 1)
             ->orderBy('id', 'desc')->first();
 
+        // dd($there_is_expense);
+
         if ($there_is_expense === null) {
             $kilometers_per_liter  = DB::table('vehicles')->where('id', $authorizerequest->vehicle)->first('kilometers_per_liter');
             $last_price = DB::table('vehicles')->where('id', $authorizerequest->vehicle)->first('last_price');
@@ -300,6 +271,7 @@ class AuthorizationController extends Controller
 
         // Geração de custos com combutivel
         for ($i = 0; $i < count($totalToRq); $i++) {
+            // dd($last_price->cost_per_liter);
             DB::table('fuel_costs')->insert(
                 [
                     'request_id' => $arr_requests_in_script[$i],
@@ -309,7 +281,7 @@ class AuthorizationController extends Controller
                     'individual_km' => $totalToRq[$i], //Custo total em KM para cada setor
                     'percet' => $percentRq[$i], //porcentagem em relação ao total real percorrido do roteiro
                     'individual_liter' => $totalToRq[$i] / $kilometers_per_liter->kilometers_per_liter, //litros por viagem
-                    'individual_spent' => ($totalToRq[$i] / $kilometers_per_liter->kilometers_per_liter) * $last_price->last_price, //valor pago
+                    'individual_spent' => ($totalToRq[$i] / $kilometers_per_liter->kilometers_per_liter) * $last_price->cost_per_liter, //valor pago
                     'date' => $info['dataretorno'], //Mater data de finalização do roteiro
                     'time' => $info['horaretorno'], //Mater hora de finalização do roteiro
                     'created_at' => $info['dataretorno'] . ' ' . $info['horaretorno'], //Gerado automáticamente
@@ -320,19 +292,20 @@ class AuthorizationController extends Controller
 
         for ($i = 0; $i < count($arr_requests_in_script); $i++) {
             Solicitacao::where('grouprequest', $authorizerequest->itinerary)
-            ->where('id', $arr_requests_in_script[$i])
-            ->update(
-                [   
-                    'mileage_traveled' => $totalToRq[$i],
-                    'statussolicitacao' => "REALIZADO",
-                    'created_at' => $info['dataretorno'] . ' ' . $info['horaretorno'], //Gerado automáticamente
-                    'updated_at' => $info['dataretorno'] . ' ' . $info['horaretorno'], //Gerado automáticamente
-                ]
-            );
+                ->where('id', $arr_requests_in_script[$i])
+                ->update(
+                    [
+                        'mileage_traveled' => $totalToRq[$i],
+                        'statussolicitacao' => "REALIZADO",
+                        'created_at' => $info['dataretorno'] . ' ' . $info['horaretorno'], //Gerado automáticamente
+                        'updated_at' => $info['dataretorno'] . ' ' . $info['horaretorno'], //Gerado automáticamente
+                    ]
+                );
         }
 
-
+        // dd($authorizerequest);
         $authorizerequest->save();
+
 
         return redirect()->route('authorizations');
     }

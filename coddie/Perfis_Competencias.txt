@@ -1,0 +1,32 @@
+01 - SUPER ADM
+    01 - Request
+    02 - Edit Request
+    03 - Delete Request
+    04 - Authorize Request
+    05 - Manages expenses
+    06 - Manages drivers
+    07 - Manages sectors
+    08 - Access reports
+    09 - View ADM dashboard
+    11 - Manages Users
+02 - ADM
+    01 - Request
+    02 - Edit Request
+    03 - Delete Request
+    04 - Authorize Request
+    05 - Manages expenses
+    06 - Manages drivers
+    07 - Manages sectors
+    08 - Access reports
+    09 - View ADM dashboard
+03 - MANAGER
+    01 - Request
+    02 - Edit Request
+    03 - Delete Request
+    08 - Access reports
+    10 - View USER dashboard
+04 - USER REQUEST
+    01 - Request
+    02 - Edit Request
+    03 - Delete Request
+    10 - View USER dashboard

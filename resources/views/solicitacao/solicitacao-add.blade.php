@@ -42,26 +42,46 @@
                                 </select>
                             </div>
                         </div>
+
                         <h5 class="ls-title-5">Seu Roteiro</h5>
-                        <p>Selecione ou digite o endereço conforme exemplo ao lado. Ex.: <strong>HSJ R. Nestor Barbosa, 315 - Parquelândia, Fortaleza</strong></p>
+                        <p>
+                            Selecione o endereço conforme exemplo ao lado. Ex.: <strong>HSJ R. Nestor Barbosa, 315 - Parquelândia, Fortaleza</strong>
+                            <br>
+                            Ou clique no botão <strong>Pesquisar</strong> ao lado do campo caso não encontre o endereço desejado.
+                        </p>
                         <hr>
 
-                        <div class="form-group col-md-12">
-                            <b class="ls-label-text">Origem</b>
-                            <input list="wizards-origem[0]" type="text" id="txtOrigem[0]" onchange="mapear(0)" class="form-control" name="origem[0]" value="" placeholder="Ex.: HSJ R. Nestor Barbosa, 315 - Parquelândia, Fortaleza - CE, 60455-610" required>
-                            <input type="hidden" id="origemValid[0]" name="origemValid[0]" />
+                        <div class="col-md-12">
+                            <div class="col-col-12"><b class="ls-label-text">Origem</b></div>
+                            <div class="form-group col-md-9">
+                                <div class="ls-custom-select">
+                                    <select id="txtOrigem[0]" name="origem[0]" class="ls-select form-control" onchange="mapear(0)" required oninvalid="this.setCustomValidity('Selecione o endereço de origem!')" onchange="try{setCustomValidity('')}catch(e){}">
+                                        <option id="awaitAddressOrigin[0]" name="awaitAddressOrigin[0]" value="" selected class=" form-control">--</option>
+                                        @foreach($allAdress as $a)
+                                        <option value="{{$a->slug_adress}}" class=" form-control">{{$a->acronym}} - {{$a->slug_adress}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                </datalist>
+                            </div>
 
-                            <datalist style="display: none;" id="wizards-origem[0]">
-                            </datalist>
+                            <div class="col-md-3"><input type="button" value="Pesquisar" onclick="search(0, `txtOrigem[0]`, `awaitAddressOrigin[0]`)" class="ls-btn-primary"></div>
                         </div>
 
-                        <div class="form-group col-md-12">
-                            <b class="ls-label-text">Destino</b>
-                            <input list="wizards-destino[0]" type="text" id="txtDestino[0]" onchange="mapear(0)" class="form-control" name="destino[0]" value="" placeholder="Ex.: SESA Av. Almirante Barroso, 600 - Praia de Iracema, Fortaleza - CE, 60060-440" required>
-                            <input type="hidden" id="destinoValid[0]" name="destinoValid[0]" />
+                        <div class="col-md-12">
+                            <div class="col-col-12"><b class="ls-label-text">Destino</b></div>
+                            <div class="form-group col-md-9">
+                                <div class="ls-custom-select">
+                                    <select id="txtDestino[0]" name="destino[0]" class="ls-select form-control" onchange="mapear(0)" required oninvalid="this.setCustomValidity('Selecione o endereço de origem!')" onchange="try{setCustomValidity('')}catch(e){}">
+                                        <option id="awaitAddressDestino[0]" name="awaitAddressDestino[0]" value="" selected class=" form-control">--</option>
+                                        @foreach($allAdress as $a)
+                                        <option value="{{$a->slug_adress}}" class=" form-control">{{$a->acronym}} - {{$a->slug_adress}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
 
-                            <datalist id="wizards-destino[0]">
-                            </datalist>
+                            <div class="col-md-3"><input type="button" value="Pesquisar" onclick="search(0, `txtDestino[0]`, `awaitAddressDestino[0]`)" class="ls-btn-primary"></div>
                         </div>
                     </div>
 
@@ -190,62 +210,60 @@
     <div class="ls-modal-large">
         <div class="ls-modal-header">
             <button data-dismiss="modal">&times;</button>
-            <h4 class="ls-modal-title">O Endereço que procura não está na lista de sugestões? <br>
-                Cadastre um novo endereço para que ele esteja disponível em suas próximas solicitações</h4>
+            <h4 class="ls-modal-title">Preencha todos os campos para buscarmos o endereço</h4>
         </div>
+        <h6 class="alert alert-primary text-center">
+            Digite as iniciais de cada palavra com letras maiúsculas<br>
+            <strong>Endereço:</strong> Rua Nestor Barbosa -<strong> Bairro:</strong> Parquelândia 
+        </h6>
         <div class="ls-modal-body" style="height: 250px;">
-            <div class="col-md-12">
-                <label class="col-md-3">
-                    <b>Nome do local</b>
-                    <input id="acronym" class="col-md-12" type="text" placeholder="Hospital São José ou HSJ" required>
-                    <div id="acronymMessageError" class="ls-alert-danger"></div>
-                </label>
-                <div class="col-md-7">
-                    <b>Endereço</b>
-                    <input id="publicPlace" class="col-md-12" type="text" placeholder="R. Nestor Barbosa" required>
-                    <div id="publicPlaceMessageError" class="ls-alert-danger"></div>
-                </div>
-                <div class="col-md-2">
-                    <b>Número</b>
-                    <input id="numberPoint" class="col-md-12" type="number" min="1" placeholder="315">
-                    <div id="numberPointMessageError" class="ls-alert-danger"></div>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="col-md-6">
-                    <b>Bairro</b>
-                    <input id="neighborhood" class="col-md-12" type="text" placeholder="Parquelândia" required>
-                    <div id="neighborhoodMessageError" class="ls-alert-danger"></div>
-                </div>
-                <div class="col-md-6">
-                    <b>Cidade</b>
-                    <input id="city" class="col-md-12" type="text" placeholder="Fortaleza" required>
-                    <div id="cityMessageError" class="ls-alert-danger"></div>
+            <form action="" name="searchAddress">
+                <div class="col-md-12">
+                    <div class="col-md-10">
+                        <b>Endereço</b>
+                        <input id="publicPlace" class="col-md-12" type="text" placeholder="Exemplo: Rua Nestor Barbosa" required>
+                        <div id="publicPlaceMessageError" class="ls-alert-danger"></div>
+                    </div>
+                    <div class="col-md-2">
+                        <b>Número</b>
+                        <input id="numberPoint" class="col-md-12" type="number" min="1" placeholder="Ex.: 315">
+                        <div id="numberPointMessageError" class="ls-alert-danger"></div>
+                    </div>
                 </div>
                 <div class="col-md-12">
-                    <button style="margin: 10px 0;" onclick="verifyAddress()" class="ls-btn-primary">Verifique o endereço</button>
-                </div>
-                <div>
-                    <div class="col-md-12" id="mapValidate">
-                        <iframe style="margin-top: 10px;" width="100%" scrolling="no"  height="330px" frameborder="0" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?saddr=HSJ&daddr=&output=embed">
-                        </iframe>
+                    <div class="col-md-6">
+                        <b>Bairro</b>
+                        <input id="neighborhood" class="col-md-12" type="text" placeholder="Exemplo: Parquelândia" required>
+                        <div id="neighborhoodMessageError" class="ls-alert-danger"></div>
                     </div>
-                    <div class="col md-12">
-                        <div class="col-md-12">
-                            <b>O endereço que você digitou é o mesmo mostrado no mapa?</b>
-                        </div>
-                        <div class="col-md-12">
-                            <input type="checkbox" id="confirmeEqualsAdress" name="confirmeEqualsAdress" required>
-                            <label><b>SIM</b></label>
-                            <div id="confirmeEqualsAdressMessageError" class="ls-alert-danger"></div>
-                        </div>
+                    <div class="col-md-6">
+                        <b>Cidade</b>
+                        <input id="city" class="col-md-12" type="text" placeholder="Exemplo: Fortaleza" required>
+                        <div id="cityMessageError" class="ls-alert-danger"></div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 10px;">
+                        <div class="" id="list-address"></div>
+                        <div id="inputAddressMessageError" class="ls-alert-danger"></div>
                     </div>
                 </div>
+            </form>
+            <div class="col-md-12">
+                <button style="margin: 10px 0;" onclick="verifyAddress()" class="btn btn-info">Pesquisar</button>
             </div>
             <div class="ls-modal-footer">
-                <button style="margin: 20px 0;" onclick="dismissModal($inputForm)" class="ls-btn-primary-danger ls-float-right">Fechar</button>
-                <button style="margin: 20px 0;" onclick="setInputValueForm($inputForm, $inputValidForm)" class="ls-btn-primary">Salvar endereço</button>
+                <button style="margin: 20px 0;" onclick="dismissModal()" class="ls-btn-primary-danger ls-float-right">Fechar</button>
+                <button id="btnValidator" style="margin: 20px 0;" class="ls-btn-primary">Salvar endereço</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="ls-modal" id="loader">
+    <div class="ls-modal-small">
+        <div class="ls-modal-body text-center" style="height: 250px;">
+            <div class="loader"></div>
+            <br>
+            <h3>Carregando . . .</h3>
         </div>
     </div>
 </div>
@@ -292,25 +310,46 @@
                                 </select>
                             </div>
                         </div>
+                        
                         <h5 class="ls-title-5">Seu Roteiro</h5>
-                        <p>Selecione ou digite o endereço conforme exemplo ao lado. Ex.: <strong>HSJ R. Nestor Barbosa, 315 - Parquelândia, Fortaleza</strong></p>
+                        <p>
+                            Selecione o endereço conforme exemplo ao lado. Ex.: <strong>HSJ R. Nestor Barbosa, 315 - Parquelândia, Fortaleza</strong>
+                            <br>
+                            Ou clique no botão <strong>Pesquisar</strong> ao lado do campo caso não encontre o endereço desejado.
+                        </p>
                         <hr>
-                        <div class="form-group col-md-12">
-                            <b class="ls-label-text">Origem</b>
-                            <input list="wizards-origem[` + i + `]" type="text" id="txtOrigem[` + i + `]" oninput="mapear(` + i + `)" class="form-control" name="origem[` + i + `]" value="" placeholder="Ex.: HSJ R. Nestor Barbosa, 315 - Parquelândia, Fortaleza - CE, 60455-610" required oninvalid="this.setCustomValidity('Informe o local de origem da sua solicitação!')" onchange="try{setCustomValidity('')}catch(e){}">
-                            <input type="hidden" id="origemValid[` + i + `]" name="origemValid[` + i + `]" />
 
-                            <datalist id="wizards-origem[` + i + `]">
-                            </datalist>
+                        <div class="col-md-12">
+                            <div class="col-col-12"><b class="ls-label-text">Origem</b></div>
+                            <div class="form-group col-md-9">
+                                <div class="ls-custom-select">
+                                    <select id="txtOrigem[` + i + `]" name="origem[` + i + `]" class="ls-select form-control" onchange="mapear(` + i + `)" required oninvalid="this.setCustomValidity('Selecione o endereço de origem!')" onchange="try{setCustomValidity('')}catch(e){}">
+                                        <option id="awaitAddressOrigin[` + i + `]" name="awaitAddressOrigin[` + i + `]" value="" selected class=" form-control">--</option>
+                                        @foreach($allAdress as $a)
+                                        <option value="{{$a->slug_adress}}" class=" form-control">{{$a->acronym}} - {{$a->slug_adress}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                </datalist>
+                            </div>
+
+                            <div class="col-md-3"><input type="button" value="Pesquisar" onclick="search(` + i + `, 'txtOrigem[` + i + `]', 'awaitAddressOrigin[` + i + `]')" class="ls-btn-primary"></div>
                         </div>
 
-                        <div class="form-group col-md-12">
-                            <b class="ls-label-text">Destino</b>
-                            <input list="wizards-destino[` + i + `]" type="text" id="txtDestino[` + i + `]" oninput="mapear(` + i + `)" class="form-control" name="destino[` + i + `]" value="" placeholder="Ex.: SESA Av. Almirante Barroso, 600 - Praia de Iracema, Fortaleza - CE, 60060-440" required oninvalid="this.setCustomValidity('Informe o destino da sua solicitação!')" onchange="try{setCustomValidity('')}catch(e){}">
-                            <input type="hidden" id="destinoValid[` + i + `]" name="destinoValid[` + i + `]" />
+                        <div class="col-md-12">
+                            <div class="col-col-12"><b class="ls-label-text">Destino</b></div>
+                            <div class="form-group col-md-9">
+                                <div class="ls-custom-select">
+                                    <select id="txtDestino[` + i + `]" name="destino[` + i + `]" class="ls-select form-control" onchange="mapear(` + i + `)" required oninvalid="this.setCustomValidity('Selecione o endereço de origem!')" onchange="try{setCustomValidity('')}catch(e){}">
+                                        <option id="awaitAddressDestino[` + i + `]" name="awaitAddressDestino[` + i + `]" value="" selected class=" form-control">--</option>
+                                        @foreach($allAdress as $a)
+                                        <option value="{{$a->slug_adress}}" class=" form-control">{{$a->acronym}} - {{$a->slug_adress}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
 
-                            <datalist id="wizards-destino[` + i + `]">
-                            </datalist>
+                            <div class="col-md-3"><input type="button" value="Pesquisar" onclick="search(` + i + `, 'txtDestino[` + i + `]', 'awaitAddressDestino[` + i + `]')" class="ls-btn-primary"></div>
                         </div>
                     </div>
 

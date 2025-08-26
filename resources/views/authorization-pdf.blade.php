@@ -2,185 +2,250 @@
 <html lang="pt-br">
 
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('css/pdfauth.css') }}">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('css/pdfreq.css') }}">
 </head>
 
-<body id="corpo-principal">
+<body>
 
-    <div id="principal">
-
-        @foreach ($authorizacao as $authorizacao)
-            <!--CABEÇALHO-->
-
-            <div id="header">
-                <!--IMAGENS-->
-                <div class="logo">
-                    <div class="col-md-12">
-                        <img class="imgLogo" src="{{ asset('images/logo.png') }}" />
-                        <img class="imgLogo" src="{{ asset('images/LogoHSJ.png') }}" />
+    <!--CABEÇALHO-->
+    @foreach ($authorizacao as $authorizacao)
+        <div class="container">
+            <div class="header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!--IMAGENS-->
+                        <div class="logo">
+                            <img class="imgLogo" src="{{ asset('images/logo.png') }}" />
+                        </div>
                     </div>
-                </div>
-
-                <!--STATUS-->
-                <div class="col-md-12" id="idStatus">
-                    <p>
-                        Nº: {{ $authorizacao->id }}<br>
-                        <span>Status: <br></span>
-                        @if ($authorizacao->statusauthorization == 'AUTORIZADO')
-                            <span style="color: green;"> {{ $authorizacao->statusauthorization }}</span>
-                        @elseif($authorizacao->statusauthorization == 'PENDENTE')
-                            <span style="color: red;"> {{ $authorizacao->statusauthorization }}</span>
-                        @elseif($authorizacao->statusauthorization == 'REALIZADO')
-                            <span style="color: aquamarine;"> {{ $authorizacao->statusauthorization }}</span>
-                        @elseif($authorizacao->statusauthorization == 'NÃO REALIZADO')
-                            <span style="color: blue;"> {{ $authorizacao->statusauthorization }}</span>
-                        @endif
-                    </p>
+                    <div class="col">
+                        <!--IMAGENS-->
+                        <div class="logo">
+                            <img class="imgLogo" src="{{ asset('images/LogoHSJ.png') }}" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <!--STATUS-->
+                        <p style="font-weight: bold; font-size: 1.1em;">
+                            Nº: {{ $authorizacao->id }}<br>
+                            <span>Status: <br></span>
+                            @if ($authorizacao->statusauthorization == 'AUTORIZADO')
+                                <span style="color: green;"> {{ $authorizacao->statusauthorization }}</span>
+                            @elseif($authorizacao->statusauthorization == 'PENDENTE')
+                                <span style="color: red;"> {{ $authorizacao->statusauthorization }}</span>
+                            @elseif($authorizacao->statusauthorization == 'REALIZADO')
+                                <span style="color: aquamarine;"> {{ $authorizacao->statusauthorization }}</span>
+                            @elseif($authorizacao->statusauthorization == 'NÃO REALIZADO')
+                                <span style="color: blue;"> {{ $authorizacao->statusauthorization }}</span>
+                            @endif
+                        </p>
+                    </div>
                 </div>
             </div>
 
             <!--BODY-->
-            <div class="corpo table-responsive text-center">
-                <br>
-                <h2 id="title">SISTEMA DE GESTÃO DE FROTA</h2>
-
-                <table class="table">
-
-                    <tbody class="col-md-12">
-                        <tr>
-                            <th style="border: solid 1px rgb(0, 0, 0);" scope="col" COLSPAN="5" ROWSPAN="5">AUTORIZAÇÃO
-                                DE
-                                SAÍDAS</th>
-                        </tr>
-                    </tbody>
-
-                    <tbody style="border: solid 1px rgb(0, 0, 0);">
-                        <tr>
-                            <th scope="col" COLSPAN="5" ROWSPAN="5" id="roadMapTh">ROTEIRO</th>
-                        </tr>
-                    </tbody>
-
-                    <tbody style="border: solid 1px rgb(0, 0, 0);">
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Setor Solicitante</th>
-                            <th scope="col">Origem</th>
-                            <th scope="col">Destino</th>
-                            <th scope="col">Quilometros Percorridos</th>
-                        </tr>
-                    </tbody>
-
-                    <tbody style="border: solid 1px rgb(0, 0, 0);">
-                        @foreach ($solicitacoes as $solicitacao)
+            <div class="body text-center">
+                <div id="request">
+                    <h2>SISTEMA DE GESTÃO DE FROTA</h2>
+                    <table class="table-bordered border-secondary">
+                        <thead>
                             <tr>
-                                <td id="tdForm">{{ $solicitacao->id }}</td>
+                                <th style="width: 1000px; background-color: #c6c6c6;">
+                                    <h5>AUTORIZAÇÃO DE SAÍDAS</h5>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
 
-                                @inject('sectors', '\App\Sector')
+                    <table class="table-bordered border-secondary">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px; height:40px;">ID</th>
+                                <th style="width: 300px; height:40px;">Setor Solicitante</th>
+                                <th style="width: 800px; height:40px;">Origem</th>
+                                <th style="width: 800px; height:40px;">Destino</th>
+                                <th style="width: 200px; height:40px;">Quilometros Percorridos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($solicitacoes as $solicitacao)
+                                <tr>
+                                    <td style="font-size: 16px;">{{ $solicitacao->id }}</td>
 
-                                @foreach ($sectors->getSectors() as $sector)
-                                    @if ($solicitacao->setorsolicitante === $sector->cc)
+                                    @inject('sectors', '\App\Sector')
 
-                                        <td id="tdForm">{{ $sector->cc }} - {{ $sector->sector }}</td>
+                                    @foreach ($sectors->getSectors() as $sector)
+                                        @if ($solicitacao->setorsolicitante === $sector->cc)
+                                            <td style="font-size: 15px; height:40px;">{{ $sector->cc }} -
+                                                {{ $sector->sector }}
+                                            </td>
+                                        @endif
+                                    @endforeach
 
+                                    <td style="font-size: 14px; height:40px;">
+                                        @inject('adress', '\App\Adress')
+                                        @foreach ($adress->getAdresses() as $adresses)
+                                            @if ($solicitacao->origem === $adresses->slug_adress)
+                                                {{ $adresses->acronym }} - {{ $adresses->slug_adress }}<br>
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                    <td style="font-size: 14px; height:40px;">
+                                        @inject('adress', '\App\Adress')
+                                        @foreach ($adress->getAdresses() as $adresses)
+                                            @if ($solicitacao->destino === $adresses->slug_adress)
+                                                {{ $adresses->acronym }} - {{ $adresses->slug_adress }}<br>
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                    <td style="font-size: 14px; height:40px;">
+                                        {{ number_format($solicitacao->mileage_traveled, 0) }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+
+                    </table>
+
+                    <table class="table-bordered border-secondary">
+                        <thead>
+                            <tr>
+                                <th style="width: 500px; height:40px;" colspan="3">Saída</th>
+                                <th style="width: 500px; height:40px;" colspan="3">Retorno</th>
+                            </tr>
+                            <tr>
+                                <td style="width: 500px; height:40px;"><strong>Data</strong></td>
+                                <td style="width: 500px; height:40px;"><strong>Hora</strong></td>
+                                <td style="width: 500px; height:40px;"><strong>Km Inicial</strong></td>
+                                <td style="width: 500px; height:40px;"><strong>Data</strong></td>
+                                <td style="width: 500px; height:40px;"><strong>Hora</strong></td>
+                                <td style="width: 500px; height:40px;"><strong>Km Final</strong></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="width: 500px; height:40px; font-size: 17px;">
+                                    {{ date('d/m/Y', strtotime($authorizacao->authorized_departure_date)) }}
+                                </td>
+                                <td style="width: 500px; height:40px; font-size: 17px;">
+                                    {{ $authorizacao->authorized_departure_time }}</td>
+                                <td style="width: 500px; height:40px; font-size: 17px;">
+                                    {{ $authorizacao->output_mileage }}</td>
+                                <td style="width: 500px; height:40px; font-size: 17px;">
+                                    {{ $authorizacao->return_date }}</td>
+                                <td style="width: 500px; height:40px; font-size: 17px;">
+                                    {{ $authorizacao->return_time }}</td>
+                                <td style="width: 500px; height:40px; font-size: 17px;">
+                                    {{ $authorizacao->return_mileage }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+
+                <div id="authorized">
+                    <table class="table-bordered border-secondary">
+                        <thead>
+                            <tr>
+                                <th style="width: 1000px; background-color: #c6c6c6;">
+                                    <h5>AUTORIZAÇÃO DE VEÍCULOS</h5>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                    <table class="table-bordered border-secondary">
+                        <thead>
+                            <tr>
+                                <th style="width: 825px; height:40px;">Veículo</th>
+                                <th style="width: 500px; height:40px;">Motorista</th>
+                                <th style="width: 200px; height:40px;">Total percorrido(Km)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @inject('vehicles', '\App\Vehicle')
+                                @foreach ($vehicles->getVehicles() as $vehicle)
+                                    @if ($authorizacao->vehicle == $vehicle->id)
+                                        <td style="height:40px; font-size: 15px;">{{ $vehicle->brand }}
+                                            | {{ $vehicle->model }} | {{ $vehicle->placa }}
+                                        </td>
                                     @endif
-
                                 @endforeach
 
-                                <td id="tdForm">{{ $solicitacao->origem }}</td>
-                                <td id="tdForm">{{ $solicitacao->destino }}</td>
-                                <td id="tdForm">{{ number_format($solicitacao->mileage_traveled, 0) }}</td>
+                                @inject('drivers', '\App\Driver')
+                                @foreach ($drivers->getDrivers() as $driver)
+                                    @if ($driver->id == $authorizacao->driver)
+                                        <td style="height:40px; font-size: 17px;">
+                                            {{ $driver->name_driver }}</td>
+                                    @endif
+                                @endforeach
 
+                                <td style="height:40px; font-size: 17px;">
+                                    <?php
+                                    $total = $authorizacao->return_mileage - $authorizacao->output_mileage;
+                                    echo $total;
+                                    ?>
+                                </td>
                             </tr>
-                        @endforeach
-                    </tbody>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                </table>
-
-
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <th style="width: 337px; border: solid 1px #000" colspan="2">Saída</th>
-                            <th style="width: 337px; border: solid 1px #000" colspan="2">Retorno</th>
-                        </tr>
-                        <tr>
-                            <td>Data</td>
-                            <td>Hora</td>
-                            <td>Data</td>
-                            <td>Hora</td>
-                        </tr>
-                        <tr>
-                            <td>{{ $authorizacao->authorized_departure_date }}</td>
-                            <td>{{ $authorizacao->authorized_departure_time }}</td>
-                            <td>{{ $authorizacao->return_date }}</td>
-                            <td>{{ $authorizacao->return_time }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <table class="table">
-                    <tbody>
-
-                        <tr>
-                            <th style="width: 233px; border: solid 1px #000">Veículo</th>
-                            <th style="width: 233px; border: solid 1px #000">Motorista</th>
-                            <th style="width: 200px; border: solid 1px #000">Total percorrido(Km)</th>
-                        </tr>
-
-                        <tr>
-                            @inject('vehicles', '\App\Vehicle')
-                            @foreach ($vehicles->getVehicles() as $vehicle)
-                                @if ($authorizacao->vehicle == $vehicle->id)
-
-                                    <td>{{ $vehicle->brand }} | {{ $vehicle->model }} | {{ $vehicle->placa }}
-                                    </td>
-
-                                @endif
-                            @endforeach
-
-                            @inject('drivers', '\App\Driver')
-                            @foreach ($drivers->getDrivers() as $driver)
-                                @if ($driver->id == $authorizacao->driver)
-
-                                    <td>{{ $driver->name_driver }}</td>
-
-                                @endif
-                            @endforeach
-
-                            <td>
-                                <?php
-                                $total = $authorizacao->return_mileage - $authorizacao->output_mileage;
-                                echo $total;
-                                ?>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <th style="width: 337px; border: solid 1px #000">Autorizado por</th>
-                            <th style="width: 337px; border: solid 1px #000">Data</th>
-                        </tr>
-                        <tr>
-                            <td>{{ $authorizacao->authorizer }}</td>
-                            <td>
-                                <?php
+                    <table class="table-bordered border-secondary">
+                        <thead>
+                            <tr>
+                                <th style="width: 500px; height:40px;">Autorizado por</th>
+                                <th style="width: 500px; height:40px;">Data e Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="width: 500px; height:40px; font-size: 17px;">
+                                    {{ $authorizacao->authorizer }}</td>
+                                <td style="width: 500px; height:40px; font-size: 17px;"><?php
                                 $my_datetime = $authorizacao->updated_at;
-                                echo date('Y-m-d H:i:s', strtotime("$my_datetime UTC"));
-                                ?>
-                            </td>
-                        </tr>
-                    </tbody>
+                                echo date('d/m/Y - H:i:s', strtotime("$my_datetime UTC"));
+                                ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                </table>
+                    <br>
 
-        @endforeach
-    </div>
+                    <!--Justificativa-->
+                    @if (is_null($authorizacao->justificativa))
+                    @else
+                        <table class="table-bordered border-secondary">
+                            <thead>
+                                <tr>
+                                    <th style="width: 1000px; background-color: #c6c6c6;">JUSTIFICATIVA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="height: 580px;">{{ $authorizacao->justificativa }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    @endif
+                    <!--/Justificativa-->
+
+                </div>
+            </div>
+
+            <div class="footer">
+                <img class="imgfooter" src="{{ asset('images/rodape.png') }}" />
+            </div>
+        </div>
+    @endforeach
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>

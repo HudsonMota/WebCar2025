@@ -8,8 +8,8 @@
 <h1 class="ls-title-intro ls-ico-home">Olá {{ $name }}! Seja bem vindo ao WebCar HSJ</h1>
 
 <div class="ls-box ls-board-box">
-  <header class="ls-info-header">
-    <h2 class="ls-title-3">Dashboard Mês Atual: {{date('m-Y')}}</h2>
+  <header class="ls-info-header card-footer">
+    <h2 class="ls-title-3">Dashboard Mês Atual: {{date('m/Y')}}</h2>
 
   </header>
 
@@ -29,7 +29,7 @@
               <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
               <fieldset>
               </fieldset>
-              <button type="submit" class="ls-btn ls-btn-sm" style="width: 150px; margin-left: auto; margin-right: auto; color: #000; font-weight: bold;">Exibir</button>
+              <button type="submit" class="btn btn-light" style="width: 150px; margin-left: auto; margin-right: auto; color: #000; font-weight: bold;">Exibir</button>
             </form>
           </div>
         </div>
@@ -56,7 +56,7 @@
                   <input type="text" name="situacao" value="MANUTENÇÃO" style="display: none;">
                 </label>
               </fieldset>
-              <button type="submit" class="ls-btn ls-btn-sm" style="width: 150px; margin-left: auto; margin-right: auto;color: #000; font-weight: bold;">Exibir</button>
+              <button type="submit" class="btn btn-light" style="width: 150px; margin-left: auto; margin-right: auto;color: #000; font-weight: bold;">Exibir</button>
             </form>
           </div>
         </div>
@@ -76,7 +76,7 @@
         </div>
         <div class="ls-box-footer">
           <div class="box-header">
-            <a href="{{ route('drivers') }}" class="ls-btn ls-btn-sm" style="width: 150px; margin-left: auto; margin-right: auto;color: #000; font-weight: bold;">Exibir</a>
+            <a href="{{ route('drivers') }}" class="btn btn-light" style="width: 150px; margin-left: auto; margin-right: auto;color: #000; font-weight: bold;">Exibir</a>
           </div>
         </div>
       </div>
@@ -96,7 +96,7 @@
         </div>
         <div class="ls-box-footer">
           <div class="box-header">
-              <a href="{{ route('solicitacoes.pendentes') }}" class="ls-btn ls-btn-sm" style="width: 150px; margin-left: auto; margin-right: auto; color: #000; font-weight: bold;">Exibir</a>
+              <a href="{{ route('solicitacoes.pendentes') }}" class="btn btn-light" style="width: 150px; margin-left: auto; margin-right: auto; color: #000; font-weight: bold;">Exibir</a>
           </div>
         </div>
       </div>
@@ -116,7 +116,7 @@
         </div>
         <div class="ls-box-footer">
           <div class="box-header">
-              <a href="{{ route('authorizations') }}" class="ls-btn ls-btn-sm" style="width: 150px; margin-left: auto; margin-right: auto; color: #000; font-weight: bold;">Exibir</a>
+              <a href="{{ route('authorizations') }}" class="btn btn-light" style="width: 150px; margin-left: auto; margin-right: auto; color: #000; font-weight: bold;">Exibir</a>
           </div>
         </div>
       </div>
@@ -137,7 +137,7 @@
         </div>
         <div class="ls-box-footer">
           <div class="box-header">
-              <a href="{{ route('authorizations') }}" class="ls-btn ls-btn-sm" style="width: 150px; margin-left: auto; margin-right: auto; color: #000; font-weight: bold;">Exibir</a>
+              <a href="{{ route('authorizations') }}" class="btn btn-light" style="width: 150px; margin-left: auto; margin-right: auto; color: #000; font-weight: bold;">Exibir</a>
           </div>
         </div>
       </div>
@@ -157,16 +157,16 @@
         </div>
         <div class="ls-box-footer">
           <div class="box-header">
-              <a href="{{ route('solicitacoes.realizadas') }}" class="ls-btn ls-btn-sm" style="width: 150px; margin-left: auto; margin-right: auto; color: #000; font-weight: bold;">Exibir</a>
+              <a href="{{ route('solicitacoes.realizadas') }}" class="btn btn-light" style="width: 150px; margin-left: auto; margin-right: auto; color: #000; font-weight: bold;">Exibir</a>
           </div>
         </div>
       </div>
     </div>
 
-</div>
-<h5>
-  Não entende como prosseguir?&nbsp; Veja o tutorial em <a class="ls-ico-question" href="/informacao/tutorial" style="font-size: 25px;">Ajuda</a>
-  
-</h5>
-
+  </div>
+  <div class="ls-box card-footer" style="margin-top: -21px;">
+    <h5 style="margin-top: 8px; margin-bottom: 8px;">
+      Não entende como prosseguir?&nbsp;&nbsp;&nbsp; Veja o <a href="/informacao/tutorial" style="font-size: 25px; text-decoration: none;">Tutorial do Sistema</a>
+    </h5>
+  </div>
 @endsection

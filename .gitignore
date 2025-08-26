@@ -4,7 +4,6 @@
 /storage/*.key
 /vendor
 /laradock
-/coddie
 .env
 .env.backup
 .phpunit.result.cache
