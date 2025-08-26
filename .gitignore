@@ -4,9 +4,6 @@
 /public/storage
 /storage/*.key
 /vendor
-.env
-.env.*
-.env copy
 .phpunit.result.cache
 
 # Laravel Homestead
@@ -16,14 +13,6 @@ Homestead.yaml
 # Logs
 npm-debug.log
 yarn-error.log
-
-# Docker
-Dockerfile
-docker-compose.yml
-.dockerfile
-.docker-compose.yml
-*.docker
-docker/
 
 # Outros arquivos sensíveis
 *.backup
